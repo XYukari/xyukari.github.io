@@ -26,15 +26,15 @@
 <meta property="og:site_name" content="Yukari&#39;s Blog">
 <meta property="og:description" content="本文使用 CGI 编写一个极其简单的天气查询网站，只需要实现一个 index.html 页面和一个 weather.py 脚本（调用高德天气 API）即可。CGI 是一种相对原始的协议，服务器接收形如 &lt;path&#x2F;to&#x2F;script?parameters&gt; 的请求时，每次创建一个新的进程运行该脚本响应。因为每次请求都要创建新进程，开销较大且资源浪费，因此在现代 Web 开发中已较少使用">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/adcode_table.png">
-<meta property="og:image" content="http://example.com/weather.png">
+<meta property="og:image" content="http://example.com/2025/11/21/30%E5%88%86%E9%92%9F%E5%86%99%E4%B8%80%E4%B8%AA%E5%A4%A9%E6%B0%94%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/adcode_table.png">
+<meta property="og:image" content="http://example.com/2025/11/21/30%E5%88%86%E9%92%9F%E5%86%99%E4%B8%80%E4%B8%AA%E5%A4%A9%E6%B0%94%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/weather.png">
 <meta property="article:published_time" content="2025-11-21T02:29:18.000Z">
-<meta property="article:modified_time" content="2025-11-21T07:20:20.369Z">
+<meta property="article:modified_time" content="2025-11-21T07:24:52.427Z">
 <meta property="article:author" content="Yukari">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="前端">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/adcode_table.png">
+<meta name="twitter:image" content="http://example.com/2025/11/21/30%E5%88%86%E9%92%9F%E5%86%99%E4%B8%80%E4%B8%AA%E5%A4%A9%E6%B0%94%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/adcode_table.png">
   
   
   
@@ -313,9 +313,10 @@
 <li>取出 <code>&lt;input&gt;</code> 输入的 <code>city_input</code>，使用 CGI 协议启动后端脚本，查询对应城市并接收脚本返回的 JSON 信息，渲染到界面上。这一部分用 Javascript 写在 <code>&lt;script&gt;</code> 标签里。</li>
 <li>后端 Python 脚本接收城市名参数，调用高德地图天气 API，整理 JSON 发回前端页面。</li>
 </ol>
-<p>我们先写后端脚本 <code>cgi-bin/weather.py</code>。根据高德开放平台的文档，注册账号，创建应用，可以拿到自己的 <code>API_KEY</code> 以及 API 链接 <code>https://restapi.amap.com/v3/weather/weatherInfo?city={adcode}&amp;key={key}</code>。</p>
+<p>我们先写后端脚本 <code>cgi-bin/weather.py</code>。根据高德开放平台的文档，注册账号，创建应用，可以拿到自己的 <code>API_KEY</code> 以及 API 链接 <code>https://restapi.amap.com/v3/weather/weatherInfo?city=&#123;adcode&#125;&amp;key=&#123;key&#125;</code>。</p>
 <p>注意到 API 不支持直接按照城市名称查询，而是需要查询城市对应的 adcode。经过寻找，在 <a target="_blank" rel="noopener" href="https://lbs.amap.com/api/webservice/download">这个页面</a> 下载城市编码表。表格给定了城市对应的 adcode，如图所示。我们只需实现一个 <code>get_adcode(city_name)</code> 函数，读取 xlsx 文件，查表并返回 adcode 即可。</p>
-<p><img src="/adcode_table.png" srcset="/img/loading.gif" lazyload alt="城市编码表"></p>
+<img src="/2025/11/21/30%E5%88%86%E9%92%9F%E5%86%99%E4%B8%80%E4%B8%AA%E5%A4%A9%E6%B0%94%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/adcode_table.png" srcset="/img/loading.gif" lazyload class="" title="城市编码表">
+
 <p>我们把城市编码表 AMap_adcode_citycode.xlsx 放在 weather.py 的同级目录下，即 <code>cgi-bin/AMap_adcode_citycode.xlsx</code>，则 <code>get_adcode(city_name)</code> 如下：</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">from</span> openyxl <span class="hljs-keyword">import</span> load_workbook<br><span class="hljs-keyword">import</span> pathlib<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_adcode</span>(<span class="hljs-params">city_name: <span class="hljs-built_in">str</span></span>):<br>    <span class="hljs-comment"># 利用 pathlib 从 weather.py 的位置推出 xlsx 的位置</span><br>    script_dir = pathlib.Path(__file__).resolve().parent<br>    file_name = <span class="hljs-string">&#x27;AMap_adcode_citycode.xlsx&#x27;</span><br>    file_path = <span class="hljs-built_in">str</span>(script_dir / file_name)<br><br>    <span class="hljs-comment"># 加载 excel 文件</span><br>    workbook = load_workbook(file_path)<br>    sheet = workbook.active<br><br>    <span class="hljs-comment"># 遍历每一行（第一行为表头，从第二行开始）</span><br>    <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> sheet.iter_rows(min_row=<span class="hljs-number">2</span>):<br>        current_city = <span class="hljs-built_in">str</span>(row[<span class="hljs-number">0</span>].value).strip(<br>        ) <span class="hljs-keyword">if</span> row[<span class="hljs-number">0</span>].value <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;&quot;</span><br><br>        <span class="hljs-comment"># current_city 均为行政区划全名，这里 current_city 包含 city_name 即认为匹配</span><br>        <span class="hljs-keyword">if</span> city_name.strip() <span class="hljs-keyword">in</span> current_city:<br>            arcode_value = row[<span class="hljs-number">1</span>].value<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>(arcode_value).strip()<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span><br></code></pre></td></tr></table></figure>
 
@@ -336,7 +337,7 @@
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs py">form = cgi.FieldStorage()<br>city_name = form.getvalue(<span class="hljs-string">&#x27;city&#x27;</span>, <span class="hljs-string">&#x27;东城区&#x27;</span>)<br></code></pre></td></tr></table></figure>
 
 <p>一个简单的天气查询网站就开发完成了，效果如图所示：</p>
-<p><img src="/weather.png" srcset="/img/loading.gif" lazyload alt="查询结果"></p>
+<img src="/2025/11/21/30%E5%88%86%E9%92%9F%E5%86%99%E4%B8%80%E4%B8%AA%E5%A4%A9%E6%B0%94%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/weather.png" srcset="/img/loading.gif" lazyload class="" title="查询结果">
 
                 
               </div>
