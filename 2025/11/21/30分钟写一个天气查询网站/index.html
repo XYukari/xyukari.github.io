@@ -1,0 +1,733 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yukari">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本文使用 CGI 编写一个极其简单的天气查询网站，只需要实现一个 index.html 页面和一个 weather.py 脚本（调用高德天气 API）即可。CGI 是一种相对原始的协议，服务器接收形如 &lt;path&#x2F;to&#x2F;script?parameters&gt; 的请求时，每次创建一个新的进程运行该脚本响应。因为每次请求都要创建新进程，开销较大且资源浪费，因此在现代 Web 开发中已较少使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="30分钟写一个天气查询网站">
+<meta property="og:url" content="http://example.com/2025/11/21/30%E5%88%86%E9%92%9F%E5%86%99%E4%B8%80%E4%B8%AA%E5%A4%A9%E6%B0%94%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/index.html">
+<meta property="og:site_name" content="Yukari&#39;s Blog">
+<meta property="og:description" content="本文使用 CGI 编写一个极其简单的天气查询网站，只需要实现一个 index.html 页面和一个 weather.py 脚本（调用高德天气 API）即可。CGI 是一种相对原始的协议，服务器接收形如 &lt;path&#x2F;to&#x2F;script?parameters&gt; 的请求时，每次创建一个新的进程运行该脚本响应。因为每次请求都要创建新进程，开销较大且资源浪费，因此在现代 Web 开发中已较少使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/11/21/30%E5%88%86%E9%92%9F%E5%86%99%E4%B8%80%E4%B8%AA%E5%A4%A9%E6%B0%94%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/adcode_table.png">
+<meta property="og:image" content="http://example.com/2025/11/21/30%E5%88%86%E9%92%9F%E5%86%99%E4%B8%80%E4%B8%AA%E5%A4%A9%E6%B0%94%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/weather.png">
+<meta property="article:published_time" content="2025-11-21T02:29:18.000Z">
+<meta property="article:modified_time" content="2025-11-21T08:00:22.793Z">
+<meta property="article:author" content="Yukari">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2025/11/21/30%E5%88%86%E9%92%9F%E5%86%99%E4%B8%80%E4%B8%AA%E5%A4%A9%E6%B0%94%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/adcode_table.png">
+  
+  
+  
+  <title>30分钟写一个天气查询网站 - Yukari&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"htCgd1nqpl7eY5SU3aqYf3db-gzGzoHsz","app_key":"BtCQV3zRTwUc3XGzul8ucGDY","server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Yukari&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="30分钟写一个天气查询网站"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-11-21 10:29" pubdate>
+          2025年11月21日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">30分钟写一个天气查询网站</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本文使用 CGI 编写一个极其简单的天气查询网站，只需要实现一个 <code>index.html</code> 页面和一个 <code>weather.py</code> 脚本（调用高德天气 API）即可。CGI 是一种相对原始的协议，服务器接收形如 <code>&lt;path/to/script?parameters&gt;</code> 的请求时，每次创建一个新的进程运行该脚本响应。因为每次请求都要创建新进程，开销较大且资源浪费，因此在现代 Web 开发中已较少使用。CGI 的现代替代方案是 WSGI，它允许应用程序作为一个长期运行的进程或线程存在于内存中，服务器可以直接调用内存中的代码，因而提高了性能，Flask, Django 等主流 Web 框架都基于 WSGI 而非 CGI。本项目目录结构如图：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">weather-info/<br>└─cgi-bin/<br>    └─weather.py<br>└─index.html<br></code></pre></td></tr></table></figure>
+
+<p>首先把前端页面写出来：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;Content-Type&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span> /&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Weather Information<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br>  <span class="hljs-comment">&lt;!-- 查询部分 --&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;city_input&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;submit&quot;</span>&gt;</span>Show<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>  <span class="hljs-comment">&lt;!-- 展示部分，后续用 JS 替换掉 span 里的内容 --&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span>City<span class="hljs-tag">&lt;/<span class="hljs-name">b</span>&gt;</span>: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;city&quot;</span>&gt;</span>北京<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span>Weather<span class="hljs-tag">&lt;/<span class="hljs-name">b</span>&gt;</span>: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;weather&quot;</span>&gt;</span>晴<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span>Temperature<span class="hljs-tag">&lt;/<span class="hljs-name">b</span>&gt;</span>: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;temperature&quot;</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span> ℃ <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span>Humidity<span class="hljs-tag">&lt;/<span class="hljs-name">b</span>&gt;</span>: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;humidity&quot;</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>%<span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>用 <code>python -m http.server --cgi 8000</code> 启动 CGI 服务器，在 <code>localhost:8000</code> 确认前端的效果无误后，接下来的任务是：</p>
+<ol>
+<li>取出 <code>&lt;input&gt;</code> 输入的 <code>city_input</code>，使用 CGI 协议启动后端脚本，查询对应城市并接收脚本返回的 JSON 信息，渲染到界面上。这一部分用 Javascript 写在 <code>&lt;script&gt;</code> 标签里。</li>
+<li>后端 Python 脚本接收城市名参数，调用高德地图天气 API，整理 JSON 发回前端页面。</li>
+</ol>
+<p>我们先写后端脚本 <code>cgi-bin/weather.py</code>。根据高德开放平台的文档，注册账号，创建应用，可以拿到自己的 <code>API_KEY</code> 以及 API 链接 <code>https://restapi.amap.com/v3/weather/weatherInfo?city=&#123;adcode&#125;&amp;key=&#123;key&#125;</code>。</p>
+<p>注意到 API 不支持直接按照城市名称查询，而是需要查询城市对应的 adcode。经过寻找，在 <a target="_blank" rel="noopener" href="https://lbs.amap.com/api/webservice/download">这个页面</a> 下载城市编码表。表格给定了城市对应的 adcode，如图所示。我们只需实现一个 <code>get_adcode(city_name)</code> 函数，读取 xlsx 文件，查表并返回 adcode 即可。</p>
+<img src="/2025/11/21/30%E5%88%86%E9%92%9F%E5%86%99%E4%B8%80%E4%B8%AA%E5%A4%A9%E6%B0%94%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/adcode_table.png" srcset="/img/loading.gif" lazyload class="" title="城市编码表">
+
+<p>我们把城市编码表 AMap_adcode_citycode.xlsx 放在 weather.py 的同级目录下，即 <code>cgi-bin/AMap_adcode_citycode.xlsx</code>，则 <code>get_adcode(city_name)</code> 如下：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">from</span> openyxl <span class="hljs-keyword">import</span> load_workbook<br><span class="hljs-keyword">import</span> pathlib<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_adcode</span>(<span class="hljs-params">city_name: <span class="hljs-built_in">str</span></span>):<br>    <span class="hljs-comment"># 利用 pathlib 从 weather.py 的位置推出 xlsx 的位置</span><br>    script_dir = pathlib.Path(__file__).resolve().parent<br>    file_name = <span class="hljs-string">&#x27;AMap_adcode_citycode.xlsx&#x27;</span><br>    file_path = <span class="hljs-built_in">str</span>(script_dir / file_name)<br><br>    <span class="hljs-comment"># 加载 excel 文件</span><br>    workbook = load_workbook(file_path)<br>    sheet = workbook.active<br><br>    <span class="hljs-comment"># 遍历每一行（第一行为表头，从第二行开始）</span><br>    <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> sheet.iter_rows(min_row=<span class="hljs-number">2</span>):<br>        current_city = <span class="hljs-built_in">str</span>(row[<span class="hljs-number">0</span>].value).strip(<br>        ) <span class="hljs-keyword">if</span> row[<span class="hljs-number">0</span>].value <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;&quot;</span><br><br>        <span class="hljs-comment"># current_city 均为行政区划全名，这里 current_city 包含 city_name 即认为匹配</span><br>        <span class="hljs-keyword">if</span> city_name.strip() <span class="hljs-keyword">in</span> current_city:<br>            arcode_value = row[<span class="hljs-number">1</span>].value<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>(arcode_value).strip()<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span><br></code></pre></td></tr></table></figure>
+
+<p>构建了城市名对 adcode 的映射后，我们先固定 <code>city_name</code>，查询一下吧：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs py">city_name = <span class="hljs-string">&quot;东城区&quot;</span><br>API_KEY = <span class="hljs-string">&quot;your/api/key&quot;</span><br><br>api = <span class="hljs-string">&quot;https://restapi.amap.com/v3/weather/weatherInfo?city=&#123;adcode&#125;&amp;key=&#123;key&#125;&quot;</span><br>url = api.<span class="hljs-built_in">format</span>(adcode=get_adcode(city_name), key=API_KEY)<br><br>response = requests.get(url)<br>data = response.json()<br><span class="hljs-built_in">print</span>(data)<br></code></pre></td></tr></table></figure>
+
+<p>打印出来的结果是：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;info&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;OK&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;infocode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;10000&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;lives&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;province&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;北京&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;city&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;东城区&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;adcode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;110101&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;weather&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;晴&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;temperature&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;13&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;winddirection&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;南&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;windpower&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;≤3&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;humidity&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;19&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;reporttime&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2025-11-21 11:07:39&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;temperature_float&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;13.0&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;humidity_float&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;19.0&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>这就是完整的 JSON 返回值，我们不需要这么多信息，这里只取出城市、天气、温度、湿度打包发回前端：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs py">responseData = &#123;<br>    <span class="hljs-string">&quot;city&quot;</span>: data[<span class="hljs-string">&quot;lives&quot;</span>][<span class="hljs-number">0</span>][<span class="hljs-string">&quot;city&quot;</span>], <span class="hljs-comment"># 注意加中间的 [0]，&quot;lives&quot; 是一个列表</span><br>    <span class="hljs-string">&quot;weather&quot;</span>: data[<span class="hljs-string">&quot;lives&quot;</span>][<span class="hljs-number">0</span>][<span class="hljs-string">&quot;weather&quot;</span>],<br>    <span class="hljs-string">&quot;temperature&quot;</span>: data[<span class="hljs-string">&quot;lives&quot;</span>][<span class="hljs-number">0</span>][<span class="hljs-string">&quot;temperature&quot;</span>],<br>    <span class="hljs-string">&quot;humidity&quot;</span>: data[<span class="hljs-string">&quot;lives&quot;</span>][<span class="hljs-number">0</span>][<span class="hljs-string">&quot;humidity&quot;</span>]<br>&#125;<br>jsonText = json.dumps(responseData, indent=<span class="hljs-number">4</span>)<br><span class="hljs-comment"># CGI 协议中，服务器将脚本的全部标准输出作为返回值，print 了就是发送了</span><br><span class="hljs-comment"># 因此需要特别注意输出格式，e.g. 先输出 header，不要输出调试语句等</span><br><span class="hljs-comment"># ——记得注释掉上上个代码块的 print(data)</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Content-type: text/json\n&quot;</span>)<br><span class="hljs-built_in">print</span>(jsonText)<br></code></pre></td></tr></table></figure>
+
+<p>回到前端，我们编写前后端交互和渲染页面的部分，主要实现 <code>showWeatherInfo()</code> 和 <code>updatePage()</code> 两个函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> request = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>(); <span class="hljs-comment">// 创建 request 对象，readyState == 0</span><br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">showWeatherInfo</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// 查询天气信息，绑定到 button 的 onclick 事件</span><br>  <span class="hljs-keyword">var</span> city_input = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;city_input&quot;</span>).<span class="hljs-property">value</span>;<br>  <span class="hljs-comment">// 通过查询参数传递城市名称，后端使用 FieldStorage 获取参数</span><br>  <span class="hljs-keyword">var</span> url = <span class="hljs-built_in">encodeURI</span>(<span class="hljs-string">&quot;/cgi-bin/weather.py?city=&quot;</span> + city_input);<br>  request.<span class="hljs-title function_">open</span>(<span class="hljs-string">&quot;GET&quot;</span>, url, <span class="hljs-literal">true</span>); <span class="hljs-comment">// open() 初始化 request 对象，readyState == 1</span><br>  request.<span class="hljs-property">onreadystatechange</span> = updatePage; <span class="hljs-comment">// updatePage 绑定到 onreadystatechange 事件，每次 readyState 改变都自动调用</span><br>  request.<span class="hljs-title function_">send</span>(<span class="hljs-literal">null</span>); <span class="hljs-comment">// 发送请求，收到 header 后 readyState == 2，接受 body 中 readyState == 3</span><br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">updatePage</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">if</span> (request.<span class="hljs-property">readyState</span> == <span class="hljs-number">4</span>) &#123;<br>    <span class="hljs-comment">// 完全接受后 readyState == 4，可以安全使用</span><br>    <span class="hljs-keyword">if</span> (request.<span class="hljs-property">status</span> == <span class="hljs-number">200</span>) &#123;<br>      <span class="hljs-keyword">var</span> replyDoc = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(request.<span class="hljs-property">responseText</span>);<br>      <span class="hljs-comment">// city</span><br>      <span class="hljs-keyword">var</span> city = replyDoc.<span class="hljs-property">city</span>;<br>      <span class="hljs-keyword">var</span> cityElement = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;city&quot;</span>);<br>      cityElement.<span class="hljs-title function_">removeChild</span>(cityElement.<span class="hljs-property">firstChild</span>);<br>      cityElement.<span class="hljs-title function_">appendChild</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(city));<br>      <span class="hljs-comment">// weather</span><br>      <span class="hljs-keyword">var</span> weather = replyDoc.<span class="hljs-property">weather</span>;<br>      <span class="hljs-keyword">var</span> weatherElement = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;weather&quot;</span>);<br>      weatherElement.<span class="hljs-title function_">removeChild</span>(weatherElement.<span class="hljs-property">firstChild</span>);<br>      weatherElement.<span class="hljs-title function_">appendChild</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(weather));<br>      <span class="hljs-comment">// temperature</span><br>      <span class="hljs-keyword">var</span> temperature = replyDoc.<span class="hljs-property">temperature</span>;<br>      <span class="hljs-keyword">var</span> temperatureElement = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;temperature&quot;</span>);<br>      temperatureElement.<span class="hljs-title function_">removeChild</span>(temperatureElement.<span class="hljs-property">firstChild</span>);<br>      temperatureElement.<span class="hljs-title function_">appendChild</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(temperature));<br>      <span class="hljs-comment">// humidity</span><br>      <span class="hljs-keyword">var</span> humidity = replyDoc.<span class="hljs-property">humidity</span>;<br>      <span class="hljs-keyword">var</span> humidityElement = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;humidity&quot;</span>);<br>      humidityElement.<span class="hljs-title function_">removeChild</span>(humidityElement.<span class="hljs-property">firstChild</span>);<br>      humidityElement.<span class="hljs-title function_">appendChild</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(humidity));<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>然后把 <code>showWeatherInfo()</code> 绑定到 <code>&lt;button&gt;</code> 上，即 <code>&lt;button type=&quot;submit&quot; name=&quot;submit&quot; onclick=&quot;showWeatherInfo()&quot;&gt;Show&lt;/button&gt;</code>。这样，当我们点击按钮后，输入框中的文本 <code>东城区</code> 将会被以 <code>GET /cgi-bin/weather.py?city=东城区</code> 形式发往后端（如前所述，开启一个新的进程运行 weather.py 脚本，脚本通过 FieldStorage 接收参数并且打印到标准输出）。</p>
+<p>现在，我们只需要补全 weather.py，让它拿到参数 <code>city_name</code> 即可——把 <code>city_name = &#39;东城区&#39;</code> 替换为：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs py">form = cgi.FieldStorage()<br>city_name = form.getvalue(<span class="hljs-string">&#x27;city&#x27;</span>, <span class="hljs-string">&#x27;东城区&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>一个简单的天气查询网站就开发完成了，效果如图所示：</p>
+<img src="/2025/11/21/30%E5%88%86%E9%92%9F%E5%86%99%E4%B8%80%E4%B8%AA%E5%A4%A9%E6%B0%94%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/weather.png" srcset="/img/loading.gif" lazyload class="" title="查询结果">
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%89%8D%E7%AB%AF/" class="print-no-link">#前端</a>
+      
+        <a href="/tags/Python/" class="print-no-link">#Python</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>30分钟写一个天气查询网站</div>
+      <div>http://example.com/2025/11/21/30分钟写一个天气查询网站/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Yukari</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年11月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/11/21/%E5%8A%9B%E6%89%A3757-%E8%AE%BE%E7%BD%AE%E4%BA%A4%E9%9B%86%E5%A4%A7%E5%B0%8F%E8%87%B3%E5%B0%91%E4%B8%BA2/" title="力扣757.设置交集大小至少为2">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">力扣757.设置交集大小至少为2</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
