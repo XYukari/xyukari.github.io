@@ -242,6 +242,266 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2025/12/08/CF1878D-Reverse-Madness/" target="_self">
+          CF1878D Reverse Madness
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/12/08/CF1878D-Reverse-Madness/" target="_self">
+        <div>
+          传送门。有这样一个结论，由 $x$ 得到的反转区间 $[a,b]$ 的对称轴就是 $x$ 所在的题给区间 $[l,r]$ 的对称轴，且 $[a,b]\subset [l,r]$。 这个结论有什么用？如果没有这个结论，我们离线 $q$ 次询问得到的是一系列散乱的反转区间。因为反转区间可能有覆盖、重叠，要得到答案只能暴力地 $O(qn)$ 去反转 $s$，没法整合在一起来降低复杂度。但是一旦有了这个结
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-12-08 18:04" pubdate>
+              2025-12-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%81%9A%E9%A2%98/" class="category-chain-item">做题</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+            
+              <a href="/tags/%E9%A2%98%E8%A7%A3/">#题解</a>
+            
+              <a href="/tags/%E5%B7%AE%E5%88%86/">#差分</a>
+            
+              <a href="/tags/Codeforces/">#Codeforces</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/12/08/CF1879D-Sum-of-XOR-Functions/" target="_self">
+          CF1879D Sum of XOR Functions
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/12/08/CF1879D-Sum-of-XOR-Functions/" target="_self">
+        <div>
+          异或和按位处理的典型例题。要求所有子区间异或和乘区间长度的总和，朴素的方法是 $O(n^2)$ 地枚举区间，显然无法通过。 因为涉及异或和，而异或运算不进位，故自然地想到把 $a_i$ 写成二进制形式，单独研究每一位的贡献，最后再合并。这是处理此类问题的一般思路。 1. 二进制拆分比方说，对于如下样例，我们把 $a_i$ 写成二进制形式： 1234a[1] = 5  = 0101a[2] = 11
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-12-08 17:40" pubdate>
+              2025-12-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%81%9A%E9%A2%98/" class="category-chain-item">做题</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+            
+              <a href="/tags/%E9%A2%98%E8%A7%A3/">#题解</a>
+            
+              <a href="/tags/Codeforces/">#Codeforces</a>
+            
+              <a href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/">#位运算</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/12/08/cJSON%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
+          cJSON源码学习笔记
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/12/08/cJSON%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
+        <div>
+          Day 112#ifndef cJSON__h#define cJSON__h  避免头文件重复定义。首先检查是否已经包含了 cJSON__h 宏，如果没有包含则包含之并执行下面的代码；如果已经包含则跳过这段代码，避免了同一份文件的重复执行，导致同一个文件内类和结构体等被多次定义等问题（至少造成了编译时间增加）。对应的 #endif 在文件的末尾。 1234#ifdef __cplusplusex
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-12-08 17:38" pubdate>
+              2025-12-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C%E8%AF%AD%E8%A8%80/">#C语言</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/12/08/%E7%BA%BF%E6%AE%B5%E6%A0%91%E6%97%B6%E9%97%B4%E5%88%86%E6%B2%BB/" target="_self">
+          线段树时间分治
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/12/08/%E7%BA%BF%E6%AE%B5%E6%A0%91%E6%97%B6%E9%97%B4%E5%88%86%E6%B2%BB/" target="_self">
+        <div>
+          线段树时间分治解决的问题是一类可离线的，要求支持先修改后撤销，查询某一时间点前修改的总贡献的问题。大致的思路是，在时间轴上建一棵线段树，把 $l$ 时刻修改，$r+1$ 时刻撤销的操作，“区间加”到 $[l,r]$ 区间上。然后遍历线段树所有节点（时间区间），$O(n\log n)$ 地统计出每个时间的答案。 以洛谷模板题 P5787 二分图 &#x2F;【模板】线段树分治 为例：有一张 $n$
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-12-08 17:30" pubdate>
+              2025-12-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%81%9A%E9%A2%98/" class="category-chain-item">做题</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
+            
+              <a href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/">#线段树</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2025/12/08/pbds%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
           pbds学习笔记
         </a>
@@ -290,6 +550,8 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/C/">#C++</a>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
             
           </div>
         
@@ -416,6 +678,8 @@
               <a href="/tags/%E9%A2%98%E8%A7%A3/">#题解</a>
             
               <a href="/tags/%E8%B4%AA%E5%BF%83/">#贪心</a>
+            
+              <a href="/tags/%E5%8A%9B%E6%89%A3/">#力扣</a>
             
           </div>
         

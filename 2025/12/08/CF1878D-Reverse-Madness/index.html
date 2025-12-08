@@ -19,23 +19,25 @@
   <meta name="author" content="Yukari">
   <meta name="keywords" content="">
   
-    <meta name="description" content="pbds 是 GNU 扩展库的一部分，在 g++ 环境下可以直接使用，clang 下不能使用。 123#include &lt;bits&#x2F;extc++.h&gt; &#x2F;&#x2F; pbds 万能头using namespace __gnu_cxx;using namespace __gnu_pbds;  堆1234567891011121314#include &lt;ext&#x2F;pb_ds&#x2F;priority_">
+    <meta name="description" content="传送门。有这样一个结论，由 $x$ 得到的反转区间 $[a,b]$ 的对称轴就是 $x$ 所在的题给区间 $[l,r]$ 的对称轴，且 $[a,b]\subset [l,r]$。 这个结论有什么用？如果没有这个结论，我们离线 $q$ 次询问得到的是一系列散乱的反转区间。因为反转区间可能有覆盖、重叠，要得到答案只能暴力地 $O(qn)$ 去反转 $s$，没法整合在一起来降低复杂度。但是一旦有了这个结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pbds学习笔记">
-<meta property="og:url" content="http://example.com/2025/12/08/pbds%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:title" content="CF1878D Reverse Madness">
+<meta property="og:url" content="http://example.com/2025/12/08/CF1878D-Reverse-Madness/index.html">
 <meta property="og:site_name" content="Yukari&#39;s Blog">
-<meta property="og:description" content="pbds 是 GNU 扩展库的一部分，在 g++ 环境下可以直接使用，clang 下不能使用。 123#include &lt;bits&#x2F;extc++.h&gt; &#x2F;&#x2F; pbds 万能头using namespace __gnu_cxx;using namespace __gnu_pbds;  堆1234567891011121314#include &lt;ext&#x2F;pb_ds&#x2F;priority_">
+<meta property="og:description" content="传送门。有这样一个结论，由 $x$ 得到的反转区间 $[a,b]$ 的对称轴就是 $x$ 所在的题给区间 $[l,r]$ 的对称轴，且 $[a,b]\subset [l,r]$。 这个结论有什么用？如果没有这个结论，我们离线 $q$ 次询问得到的是一系列散乱的反转区间。因为反转区间可能有覆盖、重叠，要得到答案只能暴力地 $O(qn)$ 去反转 $s$，没法整合在一起来降低复杂度。但是一旦有了这个结">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-12-08T09:26:20.000Z">
-<meta property="article:modified_time" content="2025-12-08T09:31:49.380Z">
+<meta property="article:published_time" content="2025-12-08T10:04:06.000Z">
+<meta property="article:modified_time" content="2025-12-08T10:04:48.712Z">
 <meta property="article:author" content="Yukari">
-<meta property="article:tag" content="C++">
-<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="Codeforces">
+<meta property="article:tag" content="差分">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="题解">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>pbds学习笔记 - Yukari&#39;s Blog</title>
+  <title>CF1878D Reverse Madness - Yukari&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -214,7 +216,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="pbds学习笔记"></span>
+            <span id="subtitle" data-typed-text="CF1878D Reverse Madness"></span>
           
         </div>
 
@@ -225,8 +227,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-12-08 17:26" pubdate>
-          2025年12月8日 下午
+        <time datetime="2025-12-08 18:04" pubdate>
+          2025年12月8日 晚上
         </time>
       </span>
     
@@ -237,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          383 字
+          451 字
         
       </span>
     
@@ -294,18 +296,15 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">pbds学习笔记</h1>
+            <h1 id="seo-header">CF1878D Reverse Madness</h1>
             
             
               <div class="markdown-body">
                 
-                <p>pbds 是 GNU 扩展库的一部分，在 g++ 环境下可以直接使用，clang 下不能使用。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/extc++.h&gt;</span> <span class="hljs-comment">// pbds 万能头</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> __gnu_cxx;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> __gnu_pbds;<br></code></pre></td></tr></table></figure>
-
-<h3 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;ext/pb_ds/priority_queue.hpp&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> __gnu_pbds;<br><br><span class="hljs-keyword">using</span> heap = __gnu_pbds::priority_queue&lt;<span class="hljs-type">int</span>&gt;; <span class="hljs-comment">// 默认大根堆</span><br>heap q;<br><span class="hljs-keyword">using</span> small_heap = __gnu_pbds::priority_queue&lt;<span class="hljs-type">int</span>, less&lt;<span class="hljs-type">int</span>&gt;&gt;; <span class="hljs-comment">// 小根堆</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">myCmp</span> &#123; <span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(node x, node y)</span> </span>&#123; <span class="hljs-keyword">return</span> x.b &lt; y.b; &#125; &#125;; <span class="hljs-comment">// 也可以在自定义类型里重载运算符</span><br><span class="hljs-keyword">using</span> my_heap = __gnu_pbds::priority_queue&lt;node, myCmp&gt;;<br><br>q.<span class="hljs-built_in">top</span>(); q.<span class="hljs-built_in">pop</span>(); q.<span class="hljs-built_in">size</span>(); q.<span class="hljs-built_in">empty</span>(); q.<span class="hljs-built_in">clear</span>(); <span class="hljs-comment">// 和 STL 完全一样</span><br>id = q.<span class="hljs-built_in">push</span>(<span class="hljs-number">10</span>); <span class="hljs-comment">// 效果和 STL 一样，会多返回一个指向插入的元素的迭代器（可以不接收）复杂度 O(1)</span><br>q.<span class="hljs-built_in">modify</span>(id, <span class="hljs-number">5</span>); <span class="hljs-comment">// 直接修改迭代器位置的元素，复杂度均摊 O(log n)</span><br>q.<span class="hljs-built_in">erase</span>(id); <span class="hljs-comment">// 直接删除迭代器位置的元素，均摊 O(log n)</span><br>q.<span class="hljs-built_in">join</span>(p); <span class="hljs-comment">// 把堆p合并到堆q，p清空，复杂度 O(1)</span><br></code></pre></td></tr></table></figure>
-
-<p>modify 的一个应用是在 Dijkstra 中可以直接修改堆内元素，不需要重复插入+ $vis$ 数组记录。</p>
-<h3 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;ext/pb_ds/assoc_container.hpp&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> __gnu_pbds;<br>gp_hash_table&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt; gp_table;<br>cc_hash_table&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt; cc_table;<br><br><span class="hljs-comment">// 用时间设置哈希值防卡，codeforces 常用</span><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> RANDOM = chrono::high_resolution_clock::<span class="hljs-built_in">now</span>().<span class="hljs-built_in">time_since_epoch</span>().<span class="hljs-built_in">count</span>();<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">chash</span> &#123;<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> x ^ RANDOM; &#125;<br>    <span class="hljs-comment">// 如果要用 string 之类的类型作为 key，可以调用 std::hash</span><br>    hash&lt;string&gt; hasher;<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(string s)</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">hasher</span>(s) ^ RANDOM; &#125;<br>    <span class="hljs-comment">// std::pair 没有默认的哈希，需要自定义</span><br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt; x)</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> x.first* <span class="hljs-number">31</span> + x.second; &#125;<br>&#125;;<br>cc_hash_table&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>, chash&gt; table1;<br>cc_hash_table&lt;string, <span class="hljs-type">int</span>, chash&gt; table2;<br></code></pre></td></tr></table></figure>
+                <p><a target="_blank" rel="noopener" href="https://codeforces.com/contest/1878/problem/D" title="观察式子发现结论。">传送门。</a>有这样一个结论，由 $x$ 得到的反转区间 $[a,b]$ 的对称轴就是 $x$ 所在的题给区间 $[l,r]$ 的对称轴，且 $[a,b]\subset [l,r]$。</p>
+<p>这个结论有什么用？如果没有这个结论，我们离线 $q$ 次询问得到的是一系列散乱的反转区间。因为反转区间可能有覆盖、重叠，要得到答案只能暴力地 $O(qn)$ 去反转 $s$，没法整合在一起来降低复杂度。但是一旦有了这个结论，我们就知道：反转区间要么不重叠，要么关于同一个轴对称，我们可以把同轴对称（$x$ 属于同一个区间）的反转区间整合在一起。</p>
+<p>如何整合？朴素的想法是把每个反转区间在原序列上标记 +1。如果一个位置被奇数个反转区间覆盖，则与其对称位置交换；否则不交换。因为只有一次查询，所以可用差分+前缀和优化。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">solve</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">int</span> n, k; string s;<br>    cin &gt;&gt; n &gt;&gt; k &gt;&gt; s;<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">l</span><span class="hljs-params">(k + <span class="hljs-number">1</span>)</span>, <span class="hljs-title">r</span><span class="hljs-params">(k + <span class="hljs-number">1</span>)</span>, <span class="hljs-title">c</span><span class="hljs-params">(n + <span class="hljs-number">1</span>)</span>, <span class="hljs-title">p</span><span class="hljs-params">(n + <span class="hljs-number">2</span>)</span></span>;<br>    <span class="hljs-comment">// c记录x所属区间，p为差分数组</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++) cin &gt;&gt; l[i];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++) &#123;<br>        cin &gt;&gt; r[i];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = l[i]; j &lt;= r[i]; j++) c[j] = i;<br>    &#125;<br>    <span class="hljs-type">int</span> q; cin &gt;&gt; q;<br>    <span class="hljs-keyword">while</span> (q--) &#123;<br>        <span class="hljs-type">int</span> x; cin &gt;&gt; x;<br>        <span class="hljs-type">int</span> a = <span class="hljs-built_in">min</span>(x, r[c[x]] + l[c[x]] - x);<br>        <span class="hljs-type">int</span> b = <span class="hljs-built_in">max</span>(x, r[c[x]] + l[c[x]] - x);<br>        p[a]++, p[b + <span class="hljs-number">1</span>]--;<br>    &#125;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) p[i] += p[i - <span class="hljs-number">1</span>];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++) &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = l[i]; j &lt;= (l[i] + r[i]) / <span class="hljs-number">2</span>; j++)<br>            <span class="hljs-keyword">if</span> (p[j] &amp; <span class="hljs-number">1</span>) <span class="hljs-built_in">swap</span>(s[j - <span class="hljs-number">1</span>], s[r[i] + l[i] - j - <span class="hljs-number">1</span>]); <span class="hljs-comment">// 如果被奇数个区间覆盖即交换</span><br>    cout &lt;&lt; s &lt;&lt; endl;<br>&#125;<br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -324,7 +323,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  <a href="/categories/%E5%81%9A%E9%A2%98/" class="category-chain-item">做题</a>
   
   
 
@@ -339,9 +338,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/C/" class="print-no-link">#C++</a>
+        <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
       
-        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="print-no-link">#数据结构</a>
+        <a href="/tags/%E9%A2%98%E8%A7%A3/" class="print-no-link">#题解</a>
+      
+        <a href="/tags/%E5%B7%AE%E5%88%86/" class="print-no-link">#差分</a>
+      
+        <a href="/tags/Codeforces/" class="print-no-link">#Codeforces</a>
       
     </div>
   
@@ -353,8 +356,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>pbds学习笔记</div>
-      <div>http://example.com/2025/12/08/pbds学习笔记/</div>
+      <div>CF1878D Reverse Madness</div>
+      <div>http://example.com/2025/12/08/CF1878D-Reverse-Madness/</div>
     </div>
     <div class="license-meta">
       
@@ -398,18 +401,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/12/08/%E7%BA%BF%E6%AE%B5%E6%A0%91%E6%97%B6%E9%97%B4%E5%88%86%E6%B2%BB/" title="线段树时间分治">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">线段树时间分治</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/12/08/XCPC%E4%BB%A3%E7%A0%81%E6%A8%A1%E6%9D%BF/" title="XCPC代码模板">
-                        <span class="hidden-mobile">XCPC代码模板</span>
+                      <a href="/2025/12/08/CF1879D-Sum-of-XOR-Functions/" title="CF1879D Sum of XOR Functions">
+                        <span class="hidden-mobile">CF1879D Sum of XOR Functions</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
