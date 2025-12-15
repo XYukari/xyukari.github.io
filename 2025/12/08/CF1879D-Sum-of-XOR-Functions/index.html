@@ -27,7 +27,7 @@
 <meta property="og:description" content="异或和按位处理的典型例题。要求所有子区间异或和乘区间长度的总和，朴素的方法是 $O(n^2)$ 地枚举区间，显然无法通过。 因为涉及异或和，而异或运算不进位，故自然地想到把 $a_i$ 写成二进制形式，单独研究每一位的贡献，最后再合并。这是处理此类问题的一般思路。 1. 二进制拆分比方说，对于如下样例，我们把 $a_i$ 写成二进制形式： 1234a[1] &#x3D; 5  &#x3D; 0101a[2] &#x3D; 11">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-12-08T09:40:50.000Z">
-<meta property="article:modified_time" content="2025-12-08T09:41:47.023Z">
+<meta property="article:modified_time" content="2025-12-14T13:33:21.532Z">
 <meta property="article:author" content="Yukari">
 <meta property="article:tag" content="Codeforces">
 <meta property="article:tag" content="位运算">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          655 字
+          658 字
         
       </span>
     
@@ -325,6 +325,17 @@
 <p>这实质上是把所有前缀和作差求区间和的操作放在一起做。</p>
 <h3 id="3-合并每一位统计答案"><a href="#3-合并每一位统计答案" class="headerlink" title="3. 合并每一位统计答案"></a>3. 合并每一位统计答案</h3><p>最终的答案 $ans&#x3D;\sum\limits_{i&#x3D;0}^{30} res_i\times 2^i$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">solve</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">int</span> n, ans = <span class="hljs-number">0</span>;<br>    cin &gt;&gt; n;<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">a</span><span class="hljs-params">(n + <span class="hljs-number">1</span>)</span>, <span class="hljs-title">b</span><span class="hljs-params">(n + <span class="hljs-number">1</span>)</span></span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) &#123;<br>        cin &gt;&gt; a[i];<br>    &#125;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> t = <span class="hljs-number">0</span>; t &lt;= <span class="hljs-number">30</span>; t++) &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) &#123;<br>            b[i] = (a[i] &gt;&gt; t) &amp; <span class="hljs-number">1</span>;<br>        &#125;<br>        <span class="hljs-type">int</span> x = <span class="hljs-number">0</span>, res = <span class="hljs-number">0</span>;   <span class="hljs-comment">// the number of 1s</span><br>        <span class="hljs-type">int</span> cnt[<span class="hljs-number">2</span>] = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">0</span>&#125;;  <span class="hljs-comment">// the number of the intervals</span><br>        <span class="hljs-type">int</span> sum[<span class="hljs-number">2</span>] = &#123;<span class="hljs-number">0</span>, <span class="hljs-number">0</span>&#125;;  <span class="hljs-comment">// the sum of the intervals&#x27; lengthes</span><br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) &#123;<br>            x = (x + b[i]) % <span class="hljs-number">2</span>;<br>            res = (res + (LL)cnt[<span class="hljs-number">1</span> - x] * i % mod - sum[<span class="hljs-number">1</span> - x] + mod) % mod;<br>            cnt[x]++, sum[x] = (sum[x] + i) % mod;<br>        &#125;<br>        ans = (ans + (LL)res * ((<span class="hljs-number">1</span> &lt;&lt; t) % mod) % mod) % mod;<br>    &#125;<br>    cout &lt;&lt; ans &lt;&lt; endl;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
 
                 
               </div>
