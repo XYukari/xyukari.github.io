@@ -19,25 +19,27 @@
   <meta name="author" content="Yukari">
   <meta name="keywords" content="">
   
-    <meta name="description" content="传送门。有这样一个结论，由 $x$ 得到的反转区间 $[a,b]$ 的对称轴就是 $x$ 所在的题给区间 $[l,r]$ 的对称轴，且 $[a,b]\subset [l,r]$。 这个结论有什么用？如果没有这个结论，我们离线 $q$ 次询问得到的是一系列散乱的反转区间。因为反转区间可能有覆盖、重叠，要得到答案只能暴力地 $O(qn)$ 去反转 $s$，没法整合在一起来降低复杂度。但是一旦有了这个结">
+    <meta name="description" content="Crab: A Unified Audio-Visual Scene Understanding Model with Explicit Cooperation问题背景现在音频-视觉的多模态大模型能完成很多任务，比如：  时间定位： 在视频中找出某事件发生的时间段; 空间定位： 找出声音来源、动作主体的位置； 时空推理： 推理事件的因果关系、动作意图； 像素级理解： 像素级的图像分割、目标检测。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CF1878D Reverse Madness">
-<meta property="og:url" content="http://example.com/2025/12/08/CF1878D-Reverse-Madness/index.html">
+<meta property="og:title" content="MLLMs论文学习笔记">
+<meta property="og:url" content="http://example.com/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Yukari&#39;s Blog">
-<meta property="og:description" content="传送门。有这样一个结论，由 $x$ 得到的反转区间 $[a,b]$ 的对称轴就是 $x$ 所在的题给区间 $[l,r]$ 的对称轴，且 $[a,b]\subset [l,r]$。 这个结论有什么用？如果没有这个结论，我们离线 $q$ 次询问得到的是一系列散乱的反转区间。因为反转区间可能有覆盖、重叠，要得到答案只能暴力地 $O(qn)$ 去反转 $s$，没法整合在一起来降低复杂度。但是一旦有了这个结">
+<meta property="og:description" content="Crab: A Unified Audio-Visual Scene Understanding Model with Explicit Cooperation问题背景现在音频-视觉的多模态大模型能完成很多任务，比如：  时间定位： 在视频中找出某事件发生的时间段; 空间定位： 找出声音来源、动作主体的位置； 时空推理： 推理事件的因果关系、动作意图； 像素级理解： 像素级的图像分割、目标检测。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-12-08T10:04:06.000Z">
-<meta property="article:modified_time" content="2025-12-14T13:33:28.740Z">
+<meta property="og:image" content="http://example.com/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/av-uie.png">
+<meta property="og:image" content="http://example.com/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/model.png">
+<meta property="og:image" content="http://example.com/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/lora.png">
+<meta property="article:published_time" content="2026-02-09T01:34:19.000Z">
+<meta property="article:modified_time" content="2026-02-09T07:52:11.889Z">
 <meta property="article:author" content="Yukari">
-<meta property="article:tag" content="Codeforces">
-<meta property="article:tag" content="差分">
-<meta property="article:tag" content="算法">
-<meta property="article:tag" content="题解">
+<meta property="article:tag" content="LoRA">
+<meta property="article:tag" content="多模态大模型">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/av-uie.png">
   
   
   
-  <title>CF1878D Reverse Madness - Yukari&#39;s Blog</title>
+  <title>MLLMs论文学习笔记 - Yukari&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -216,7 +218,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CF1878D Reverse Madness"></span>
+            <span id="subtitle" data-typed-text="MLLMs论文学习笔记"></span>
           
         </div>
 
@@ -227,8 +229,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-12-08 18:04" pubdate>
-          2025年12月8日 晚上
+        <time datetime="2026-02-09 09:34" pubdate>
+          2026年2月9日 上午
         </time>
       </span>
     
@@ -239,7 +241,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          454 字
+          1.2k 字
         
       </span>
     
@@ -250,7 +252,7 @@
         
         
         
-          4 分钟
+          11 分钟
         
       </span>
     
@@ -296,26 +298,40 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">CF1878D Reverse Madness</h1>
+            <h1 id="seo-header">MLLMs论文学习笔记</h1>
             
             
               <div class="markdown-body">
                 
-                <p><a target="_blank" rel="noopener" href="https://codeforces.com/contest/1878/problem/D" title="观察式子发现结论。">传送门。</a>有这样一个结论，由 $x$ 得到的反转区间 $[a,b]$ 的对称轴就是 $x$ 所在的题给区间 $[l,r]$ 的对称轴，且 $[a,b]\subset [l,r]$。</p>
-<p>这个结论有什么用？如果没有这个结论，我们离线 $q$ 次询问得到的是一系列散乱的反转区间。因为反转区间可能有覆盖、重叠，要得到答案只能暴力地 $O(qn)$ 去反转 $s$，没法整合在一起来降低复杂度。但是一旦有了这个结论，我们就知道：反转区间要么不重叠，要么关于同一个轴对称，我们可以把同轴对称（$x$ 属于同一个区间）的反转区间整合在一起。</p>
-<p>如何整合？朴素的想法是把每个反转区间在原序列上标记 +1。如果一个位置被奇数个反转区间覆盖，则与其对称位置交换；否则不交换。因为只有一次查询，所以可用差分+前缀和优化。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">solve</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">int</span> n, k; string s;<br>    cin &gt;&gt; n &gt;&gt; k &gt;&gt; s;<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">l</span><span class="hljs-params">(k + <span class="hljs-number">1</span>)</span>, <span class="hljs-title">r</span><span class="hljs-params">(k + <span class="hljs-number">1</span>)</span>, <span class="hljs-title">c</span><span class="hljs-params">(n + <span class="hljs-number">1</span>)</span>, <span class="hljs-title">p</span><span class="hljs-params">(n + <span class="hljs-number">2</span>)</span></span>;<br>    <span class="hljs-comment">// c记录x所属区间，p为差分数组</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++) cin &gt;&gt; l[i];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++) &#123;<br>        cin &gt;&gt; r[i];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = l[i]; j &lt;= r[i]; j++) c[j] = i;<br>    &#125;<br>    <span class="hljs-type">int</span> q; cin &gt;&gt; q;<br>    <span class="hljs-keyword">while</span> (q--) &#123;<br>        <span class="hljs-type">int</span> x; cin &gt;&gt; x;<br>        <span class="hljs-type">int</span> a = <span class="hljs-built_in">min</span>(x, r[c[x]] + l[c[x]] - x);<br>        <span class="hljs-type">int</span> b = <span class="hljs-built_in">max</span>(x, r[c[x]] + l[c[x]] - x);<br>        p[a]++, p[b + <span class="hljs-number">1</span>]--;<br>    &#125;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) p[i] += p[i - <span class="hljs-number">1</span>];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++) &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = l[i]; j &lt;= (l[i] + r[i]) / <span class="hljs-number">2</span>; j++)<br>            <span class="hljs-keyword">if</span> (p[j] &amp; <span class="hljs-number">1</span>) <span class="hljs-built_in">swap</span>(s[j - <span class="hljs-number">1</span>], s[r[i] + l[i] - j - <span class="hljs-number">1</span>]); <span class="hljs-comment">// 如果被奇数个区间覆盖即交换</span><br>    cout &lt;&lt; s &lt;&lt; endl;<br>&#125;<br></code></pre></td></tr></table></figure>
+                <h2 id="Crab-A-Unified-Audio-Visual-Scene-Understanding-Model-with-Explicit-Cooperation"><a href="#Crab-A-Unified-Audio-Visual-Scene-Understanding-Model-with-Explicit-Cooperation" class="headerlink" title="Crab: A Unified Audio-Visual Scene Understanding Model with Explicit Cooperation"></a>Crab: A Unified Audio-Visual Scene Understanding Model with Explicit Cooperation</h2><h3 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h3><p>现在音频-视觉的多模态大模型能完成很多任务，比如：</p>
+<ul>
+<li><strong>时间定位：</strong> 在视频中找出某事件发生的时间段;</li>
+<li><strong>空间定位：</strong> 找出声音来源、动作主体的位置；</li>
+<li><strong>时空推理：</strong> 推理事件的因果关系、动作意图；</li>
+<li><strong>像素级理解：</strong> 像素级的图像分割、目标检测。</li>
+</ul>
+<p>显然这些任务之间是有 <strong>内在联系</strong> 的，比如时间定位、空间定位可能需要时空推理提供理解上的帮助，像素级分割需要先大致进行时间空间定位等。而现在简单的多任务联合训练不能很好地利用这种内在联系，有待改进。</p>
+<p>让我们首先来看看什么是“简单的多任务联合训练”。最原始的阶段，多任务是通过使用不同的输出头来实现的，同一个 backbone，给每个任务一个输出头，如下图所示：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">Video/Text/Audio Encoder<br><span class="hljs-code">          ↓</span><br>Multimodal Fusion<br><span class="hljs-code">          ↓</span><br>Shared Representation<br><span class="hljs-section">          ↓</span><br><span class="hljs-section">-------------------------------------</span><br>|   Task Head 1 (时间定位)           |<br>|   Task Head 2 (空间定位)           |<br>|   Task Head 3 (分割)               |<br><span class="hljs-section">|   Task Head 4 (推理)               |</span><br><span class="hljs-section">-------------------------------------</span><br></code></pre></td></tr></table></figure>
 
-<script>
-MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']]
-  }
-};
-</script>
-<script id="MathJax-script" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-</script>
+<p>这么做的问题非常明显，如果不冻结 backbone，那么 loss 会直接打到 backbone 上去，随着 backbone 的增大（比如 LLM）慢慢调不动了；如果冻结 backbone，那实际上只在训练一个几层的小输出头，效果很差。</p>
+<p>这部分基本上是前 LoRA 时代的历史，在这个时代多任务联合训练是怎么进行的呢？如果不冻结 backbone，那可能还有点意义，至少不同任务都能反馈到 backbone 模型上（只要能训得动就行）；如果冻结了 backbone，共享表示就全部被冻结了，数据之间没有交互，任务没法协同。</p>
+<p>此后，LoRA 被发明出来，通过在 LLM 内部开辟旁路的方式，用低秩矩阵来“改一点点大模型”，这让大模型微调成为可能，但是还是没有很好地解决多任务联合训练的问题。有的方法只用一组 LoRA，所有任务都是调这同一组 LoRA，不同的任务会将模型扯向不同的方向，loss scale 等问题也很成问题，最终导致训练甲任务后乙任务表现下降——这就像是一个脑力有限的人同时学八门课，把自己弄糊涂了。</p>
+<p>而另一个方案是给每个任务一组单独的 LoRA，互不通用，这当然解决了不同任务对齐的问题，但是各个任务之间也无法互相借鉴，很大程度上丧失了联合训练的意义——八个人每人学一门课，互不交流，“数学”就没法为“物理”提供帮助了。</p>
+<h3 id="创新点"><a href="#创新点" class="headerlink" title="创新点"></a>创新点</h3><p>本文有两个主要的贡献：设计 AV-UIE 数据集，以及新型的多头 LoRA 机制。首先来看 AV-UIE 数据集：</p>
+<img src="/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/av-uie.png" srcset="/img/loading.gif" lazyload class="" title="AV-UIE数据集">
+
+<p>之前的数据集，不管是时间定位、空间定位还是时空推理等，其回答都是简单的。如询问“第一个响起的乐器的左侧的乐器是什么？”，其回答可能只有“大提琴”三个字；如果是时间定位，可能只有简单的“3-6 秒”几个字。作者基于已有的此类数据集进行扩展，利用 LLM 进行扩写和人工修改，在保留原来回答的基础上增加了显式的其他任务的信息，比如：</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs tap">画面中三个男人在圣诞树前演奏乐器。<br>左侧的男人在拉大提琴，中间的男人在拉小提琴，右侧的男人在弹钢琴。（空间定位）<br>第<span class="hljs-number"> 2 </span>秒开始，钢琴开始响；从第<span class="hljs-number"> 4 </span>秒开始，三个乐器一起演奏。（时间定位）<br>钢琴的左侧是大提琴，<br>所以答案是大提琴.（时空推理）<br></code></pre></td></tr></table></figure>
+
+<p>通过改造数据集，在输入阶段就提供了显式的多任务联合的监督信号。</p>
+<p>接下来看 LoRA 的设计。和一般的多模态大模型一样，Crab 模型分为前端和大模型两部分，前端采用了 Clip 作为视觉编码器，采用 BEATs 作为音频编码器，用 Q-Former 查询视觉和音频信息（控制长度），并用两层 MLP 对齐大模型 hidden layer；冻结编码器，训练 Q-Former 和 MLP：基本都是常规做法。</p>
+<img src="/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/model.png" srcset="/img/loading.gif" lazyload class="">
+
+<p>大模型内部的 LoRA 设计是主要创新点。作者用同一套 LoRA（不是多套 LoRA 分别处理不同任务），但是将 LoRA 的低秩矩阵拆分实现为共用的 A 和多个不同的 B，即共享一部分，独立一部分；同时作者引入 Router R，输出每个 LoRA 头的权重与 LoRA 输出加权融合。</p>
+<img src="/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/lora.png" srcset="/img/loading.gif" lazyload class="">
+
+<p>在训练部分，作者仍然是随机抽取不同任务的 batch 进行训练（但是使用 AV-UIE 数据集），loss 也仍然是不同任务的加权和。</p>
 
                 
               </div>
@@ -334,7 +350,7 @@ MathJax = {
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%81%9A%E9%A2%98/" class="category-chain-item">做题</a>
+  <a href="/categories/%E7%A7%91%E7%A0%94/" class="category-chain-item">科研</a>
   
   
 
@@ -349,13 +365,9 @@ MathJax = {
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
+        <a href="/tags/%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="print-no-link">#多模态大模型</a>
       
-        <a href="/tags/%E9%A2%98%E8%A7%A3/" class="print-no-link">#题解</a>
-      
-        <a href="/tags/%E5%B7%AE%E5%88%86/" class="print-no-link">#差分</a>
-      
-        <a href="/tags/Codeforces/" class="print-no-link">#Codeforces</a>
+        <a href="/tags/LoRA/" class="print-no-link">#LoRA</a>
       
     </div>
   
@@ -367,8 +379,8 @@ MathJax = {
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CF1878D Reverse Madness</div>
-      <div>http://example.com/2025/12/08/CF1878D-Reverse-Madness/</div>
+      <div>MLLMs论文学习笔记</div>
+      <div>http://example.com/2026/02/09/MLLMs论文学习笔记/</div>
     </div>
     <div class="license-meta">
       
@@ -380,7 +392,7 @@ MathJax = {
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年12月8日</div>
+          <div>2026年2月9日</div>
         </div>
       
       
@@ -412,18 +424,12 @@ MathJax = {
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="MLLMs论文学习笔记">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">MLLMs论文学习笔记</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/12/08/CF1879D-Sum-of-XOR-Functions/" title="CF1879D Sum of XOR Functions">
-                        <span class="hidden-mobile">CF1879D Sum of XOR Functions</span>
+                      <a href="/2025/12/08/CF1878D-Reverse-Madness/" title="CF1878D Reverse Madness">
+                        <span class="hidden-mobile">CF1878D Reverse Madness</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
