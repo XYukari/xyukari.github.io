@@ -27,7 +27,7 @@
 <meta property="og:description" content="题面给你一个整数数组 $nums$。如果子数组中 不同偶数 的数量等于 不同奇数 的数量，则称该 子数组 是 平衡的。返回 最长 平衡子数组的长度。子数组 是数组中连续且 非空 的一段元素序列。 思路构造数组 $a$，将 $nums$ 区间内 同一偶数最后一次出现 记为 $a[i]&#x3D;-1$，区间内 同一奇数最后一次出现 记为 $a[i]&#x3D;1$，其它位置记为 $a[i]&amp;#x3D">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-02-11T03:36:58.000Z">
-<meta property="article:modified_time" content="2026-02-11T04:00:11.327Z">
+<meta property="article:modified_time" content="2026-02-11T04:08:28.908Z">
 <meta property="article:author" content="Yukari">
 <meta property="article:tag" content="前缀和">
 <meta property="article:tag" content="力扣">
@@ -241,7 +241,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          509 字
+          507 字
         
       </span>
     
@@ -307,7 +307,7 @@
 <h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>构造数组 $a$，将 $nums$ 区间内 <strong>同一偶数最后一次出现</strong> 记为 $a[i]&#x3D;-1$，区间内 <strong>同一奇数最后一次出现</strong> 记为 $a[i]&#x3D;1$，其它位置记为 $a[i]&#x3D;0$，则问题转换为寻找最长的和为 $0$ 的 $a[l..r]$。我们就可以枚举 $i$，将 $a[i]$ 逐个纳入考虑并更新前缀和，寻找第一个 $sum[j]&#x3D;sum[i]$ 的 $j$，用 $i-j$ 更新答案。</p>
 <p>现在存在两个问题：</p>
 <ol>
-<li>如何更新前缀和，新加入的 $nums[i]&#x3D;nums[j]$ 显然会导致 $a[j]$ 变成 $0$，而 $a[i]$ 变成 $1$ 或 $-1$；</li>
+<li>如何更新前缀和，新加入的 $nums[i]&#x3D;nums[j]$ 会导致 $a[j]$ 变成 $0$，而 $a[i]$ 变成 $1$ 或 $-1$；</li>
 <li>如何找到第一个 $sum[j]&#x3D;sum[i]$。</li>
 </ol>
 <p>注意到这两个操作都可以用线段树解决。具体的说，对于第一个问题，我们不妨用一个哈希表记录每个数字最后一次出现的位置，在加入 $nums[i]$ 时首先检查：</p>
