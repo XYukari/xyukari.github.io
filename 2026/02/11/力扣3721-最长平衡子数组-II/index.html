@@ -19,27 +19,27 @@
   <meta name="author" content="Yukari">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Crab: A Unified Audio-Visual Scene Understanding Model with Explicit Cooperation问题背景现在音频-视觉的多模态大模型能完成很多任务，比如：  时间定位： 在视频中找出某事件发生的时间段; 空间定位： 找出声音来源、动作主体的位置； 时空推理： 推理事件的因果关系、动作意图； 像素级理解： 像素级的图像分割、目标检测。">
+    <meta name="description" content="题面给你一个整数数组 $nums$。如果子数组中 不同偶数 的数量等于 不同奇数 的数量，则称该 子数组 是 平衡的。返回 最长 平衡子数组的长度。子数组 是数组中连续且 非空 的一段元素序列。 思路构造数组 $a$，将 $nums$ 区间内 同一偶数最后一次出现 记为 $a[i]&#x3D;-1$，区间内 同一奇数最后一次出现 记为 $a[i]&#x3D;1$，其它位置记为 $a[i]&amp;#x3D">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MLLMs论文学习笔记">
-<meta property="og:url" content="http://example.com/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:title" content="力扣3721. 最长平衡子数组 II">
+<meta property="og:url" content="http://example.com/2026/02/11/%E5%8A%9B%E6%89%A33721-%E6%9C%80%E9%95%BF%E5%B9%B3%E8%A1%A1%E5%AD%90%E6%95%B0%E7%BB%84-II/index.html">
 <meta property="og:site_name" content="Yukari&#39;s Blog">
-<meta property="og:description" content="Crab: A Unified Audio-Visual Scene Understanding Model with Explicit Cooperation问题背景现在音频-视觉的多模态大模型能完成很多任务，比如：  时间定位： 在视频中找出某事件发生的时间段; 空间定位： 找出声音来源、动作主体的位置； 时空推理： 推理事件的因果关系、动作意图； 像素级理解： 像素级的图像分割、目标检测。">
+<meta property="og:description" content="题面给你一个整数数组 $nums$。如果子数组中 不同偶数 的数量等于 不同奇数 的数量，则称该 子数组 是 平衡的。返回 最长 平衡子数组的长度。子数组 是数组中连续且 非空 的一段元素序列。 思路构造数组 $a$，将 $nums$ 区间内 同一偶数最后一次出现 记为 $a[i]&#x3D;-1$，区间内 同一奇数最后一次出现 记为 $a[i]&#x3D;1$，其它位置记为 $a[i]&amp;#x3D">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/av-uie.png">
-<meta property="og:image" content="http://example.com/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/model.png">
-<meta property="og:image" content="http://example.com/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/lora.png">
-<meta property="article:published_time" content="2026-02-09T01:34:19.000Z">
-<meta property="article:modified_time" content="2026-02-09T07:52:11.889Z">
+<meta property="article:published_time" content="2026-02-11T03:36:58.000Z">
+<meta property="article:modified_time" content="2026-02-11T04:00:11.327Z">
 <meta property="article:author" content="Yukari">
-<meta property="article:tag" content="LoRA">
-<meta property="article:tag" content="多模态大模型">
+<meta property="article:tag" content="前缀和">
+<meta property="article:tag" content="力扣">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="线段树">
+<meta property="article:tag" content="题解">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/av-uie.png">
   
   
   
-  <title>MLLMs论文学习笔记 - Yukari&#39;s Blog</title>
+  <title>力扣3721. 最长平衡子数组 II - Yukari&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -218,7 +218,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="MLLMs论文学习笔记"></span>
+            <span id="subtitle" data-typed-text="力扣3721. 最长平衡子数组 II"></span>
           
         </div>
 
@@ -229,8 +229,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-02-09 09:34" pubdate>
-          2026年2月9日 上午
+        <time datetime="2026-02-11 11:36" pubdate>
+          2026年2月11日 中午
         </time>
       </span>
     
@@ -241,7 +241,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.2k 字
+          509 字
         
       </span>
     
@@ -252,7 +252,7 @@
         
         
         
-          11 分钟
+          5 分钟
         
       </span>
     
@@ -298,41 +298,34 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">MLLMs论文学习笔记</h1>
+            <h1 id="seo-header">力扣3721. 最长平衡子数组 II</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="Crab-A-Unified-Audio-Visual-Scene-Understanding-Model-with-Explicit-Cooperation"><a href="#Crab-A-Unified-Audio-Visual-Scene-Understanding-Model-with-Explicit-Cooperation" class="headerlink" title="Crab: A Unified Audio-Visual Scene Understanding Model with Explicit Cooperation"></a>Crab: A Unified Audio-Visual Scene Understanding Model with Explicit Cooperation</h2><h3 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h3><p>现在音频-视觉的多模态大模型能完成很多任务，比如：</p>
+                <h3 id="题面"><a href="#题面" class="headerlink" title="题面"></a>题面</h3><p>给你一个整数数组 $nums$。如果子数组中 <strong>不同偶数</strong> 的数量等于 <strong>不同奇数</strong> 的数量，则称该 <strong>子数组</strong> 是 <strong>平衡的</strong>。返回 <strong>最长</strong> 平衡子数组的长度。<strong>子数组</strong> 是数组中连续且 <strong>非空</strong> 的一段元素序列。</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>构造数组 $a$，将 $nums$ 区间内 <strong>同一偶数最后一次出现</strong> 记为 $a[i]&#x3D;-1$，区间内 <strong>同一奇数最后一次出现</strong> 记为 $a[i]&#x3D;1$，其它位置记为 $a[i]&#x3D;0$，则问题转换为寻找最长的和为 $0$ 的 $a[l..r]$。我们就可以枚举 $i$，将 $a[i]$ 逐个纳入考虑并更新前缀和，寻找第一个 $sum[j]&#x3D;sum[i]$ 的 $j$，用 $i-j$ 更新答案。</p>
+<p>现在存在两个问题：</p>
+<ol>
+<li>如何更新前缀和，新加入的 $nums[i]&#x3D;nums[j]$ 显然会导致 $a[j]$ 变成 $0$，而 $a[i]$ 变成 $1$ 或 $-1$；</li>
+<li>如何找到第一个 $sum[j]&#x3D;sum[i]$。</li>
+</ol>
+<p>注意到这两个操作都可以用线段树解决。具体的说，对于第一个问题，我们不妨用一个哈希表记录每个数字最后一次出现的位置，在加入 $nums[i]$ 时首先检查：</p>
 <ul>
-<li><strong>时间定位：</strong> 在视频中找出某事件发生的时间段;</li>
-<li><strong>空间定位：</strong> 找出声音来源、动作主体的位置；</li>
-<li><strong>时空推理：</strong> 推理事件的因果关系、动作意图；</li>
-<li><strong>像素级理解：</strong> 像素级的图像分割、目标检测。</li>
+<li>如果是第一次出现，则 $sum[i..n]$ 区间加 $1$ 或 $-1$；</li>
+<li>如果不是第一次出现，上一次出现在 $nums[j]$，则 $sum[j..n]$ 区间减 $1$ 或 $-1$（撤销上次操作），$sum[i..n]$ 区间加 $1$ 或 $-1$。</li>
 </ul>
-<p>显然这些任务之间是有 <strong>内在联系</strong> 的，比如时间定位、空间定位可能需要时空推理提供理解上的帮助，像素级分割需要先大致进行时间空间定位等。而现在简单的多任务联合训练不能很好地利用这种内在联系，有待改进。</p>
-<p>让我们首先来看看什么是“简单的多任务联合训练”。最原始的阶段，多任务是通过使用不同的输出头来实现的，同一个 backbone，给每个任务一个输出头，如下图所示：</p>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">Video/Text/Audio Encoder<br><span class="hljs-code">          ↓</span><br>Multimodal Fusion<br><span class="hljs-code">          ↓</span><br>Shared Representation<br><span class="hljs-section">          ↓</span><br><span class="hljs-section">-------------------------------------</span><br>|   Task Head 1 (时间定位)           |<br>|   Task Head 2 (空间定位)           |<br>|   Task Head 3 (分割)               |<br><span class="hljs-section">|   Task Head 4 (推理)               |</span><br><span class="hljs-section">-------------------------------------</span><br></code></pre></td></tr></table></figure>
-
-<p>这么做的问题非常明显，如果不冻结 backbone，那么 loss 会直接打到 backbone 上去，随着 backbone 的增大（比如 LLM）慢慢调不动了；如果冻结 backbone，那实际上只在训练一个几层的小输出头，效果很差。</p>
-<p>这部分基本上是前 LoRA 时代的历史，在这个时代多任务联合训练是怎么进行的呢？如果不冻结 backbone，那可能还有点意义，至少不同任务都能反馈到 backbone 模型上（只要能训得动就行）；如果冻结了 backbone，共享表示就全部被冻结了，数据之间没有交互，任务没法协同。</p>
-<p>此后，LoRA 被发明出来，通过在 LLM 内部开辟旁路的方式，用低秩矩阵来“改一点点大模型”，这让大模型微调成为可能，但是还是没有很好地解决多任务联合训练的问题。有的方法只用一组 LoRA，所有任务都是调这同一组 LoRA，不同的任务会将模型扯向不同的方向，loss scale 等问题也很成问题，最终导致训练甲任务后乙任务表现下降——这就像是一个脑力有限的人同时学八门课，把自己弄糊涂了。</p>
-<p>而另一个方案是给每个任务一组单独的 LoRA，互不通用，这当然解决了不同任务对齐的问题，但是各个任务之间也无法互相借鉴，很大程度上丧失了联合训练的意义——八个人每人学一门课，互不交流，“数学”就没法为“物理”提供帮助了。</p>
-<h3 id="创新点"><a href="#创新点" class="headerlink" title="创新点"></a>创新点</h3><p>本文有两个主要的贡献：设计 AV-UIE 数据集，以及新型的多头 LoRA 机制。首先来看 AV-UIE 数据集：</p>
-<img src="/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/av-uie.png" srcset="/img/loading.gif" lazyload class="" title="AV-UIE数据集">
-
-<p>之前的数据集，不管是时间定位、空间定位还是时空推理等，其回答都是简单的。如询问“第一个响起的乐器的左侧的乐器是什么？”，其回答可能只有“大提琴”三个字；如果是时间定位，可能只有简单的“3-6 秒”几个字。作者基于已有的此类数据集进行扩展，利用 LLM 进行扩写和人工修改，在保留原来回答的基础上增加了显式的其他任务的信息，比如：</p>
-<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs tap">画面中三个男人在圣诞树前演奏乐器。<br>左侧的男人在拉大提琴，中间的男人在拉小提琴，右侧的男人在弹钢琴。（空间定位）<br>第<span class="hljs-number"> 2 </span>秒开始，钢琴开始响；从第<span class="hljs-number"> 4 </span>秒开始，三个乐器一起演奏。（时间定位）<br>钢琴的左侧是大提琴，<br>所以答案是大提琴.（时空推理）<br></code></pre></td></tr></table></figure>
-
-<p>通过改造数据集，在输入阶段就提供了显式的多任务联合的监督信号。</p>
-<p>接下来看 LoRA 的设计。和一般的多模态大模型一样，Crab 模型分为前端和大模型两部分，前端采用了 Clip 作为视觉编码器，采用 BEATs 作为音频编码器，用 Q-Former 查询视觉和音频信息（控制长度），并用两层 MLP 对齐大模型 hidden layer；冻结编码器，训练 Q-Former 和 MLP：基本都是常规做法。</p>
-<img src="/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/model.png" srcset="/img/loading.gif" lazyload class="">
-
-<p>大模型内部的 LoRA 设计是主要创新点。作者用同一套 LoRA（不是多套 LoRA 分别处理不同任务），但是将 LoRA 的低秩矩阵拆分实现为共用的 A 和多个不同的 B，即共享一部分，独立一部分；同时作者引入 Router R，输出每个 LoRA 头的权重与 LoRA 输出加权融合。</p>
-<img src="/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/lora.png" srcset="/img/loading.gif" lazyload class="">
-
-<p>在训练部分，作者仍然是随机抽取不同任务的 batch 进行训练（但是使用 AV-UIE 数据集），loss 也仍然是不同任务的加权和。</p>
-
+<p>而区间加用线段树很好实现。第二个问题，注意到前缀和 $sum$ 相邻位置的变化量的绝对值 $\le 1$，根据 <strong>离散介值定理</strong>，给定区间 $[l,r]$ 的 $\min, \max$ 值，只要 $target\in [\min, \max]$ 则一定存在 $sum[i]&#x3D;target, i \in [l,r]$。所以我们可以维护区间 $\min, \max$ 并在线段树查询时作为参数传入，首先检查左子区间是否存在 $target$ 值，如果存在则进入，否则进入右子区间。这个复杂度是 $O(\log n)$ 的。</p>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\(', '\)']]
+  }
+};
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
                 
               </div>
             
@@ -350,7 +343,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%A7%91%E7%A0%94/" class="category-chain-item">科研</a>
+  <a href="/categories/%E5%81%9A%E9%A2%98/" class="category-chain-item">做题</a>
   
   
 
@@ -365,9 +358,17 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="print-no-link">#多模态大模型</a>
+        <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
       
-        <a href="/tags/LoRA/" class="print-no-link">#LoRA</a>
+        <a href="/tags/%E9%A2%98%E8%A7%A3/" class="print-no-link">#题解</a>
+      
+        <a href="/tags/%E5%8A%9B%E6%89%A3/" class="print-no-link">#力扣</a>
+      
+        <a href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/" class="print-no-link">#线段树</a>
+      
+        <a href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/" class="print-no-link">#前缀和</a>
+      
+        <a href="/tags/%E6%95%B0%E5%AD%A6/" class="print-no-link">#数学</a>
       
     </div>
   
@@ -379,8 +380,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>MLLMs论文学习笔记</div>
-      <div>http://example.com/2026/02/09/MLLMs论文学习笔记/</div>
+      <div>力扣3721. 最长平衡子数组 II</div>
+      <div>http://example.com/2026/02/11/力扣3721-最长平衡子数组-II/</div>
     </div>
     <div class="license-meta">
       
@@ -392,7 +393,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2026年2月9日</div>
+          <div>2026年2月11日</div>
         </div>
       
       
@@ -424,18 +425,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/02/11/%E5%8A%9B%E6%89%A33721-%E6%9C%80%E9%95%BF%E5%B9%B3%E8%A1%A1%E5%AD%90%E6%95%B0%E7%BB%84-II/" title="力扣3721. 最长平衡子数组 II">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">力扣3721. 最长平衡子数组 II</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/12/08/CF1878D-Reverse-Madness/" title="CF1878D Reverse Madness">
-                        <span class="hidden-mobile">CF1878D Reverse Madness</span>
+                      <a href="/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="MLLMs论文学习笔记">
+                        <span class="hidden-mobile">MLLMs论文学习笔记</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
