@@ -31,9 +31,10 @@
 <meta property="og:image" content="http://example.com/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/crab_lora.png">
 <meta property="og:image" content="http://example.com/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/dtos_model.png">
 <meta property="article:published_time" content="2026-02-09T01:34:19.000Z">
-<meta property="article:modified_time" content="2026-02-20T05:41:26.384Z">
+<meta property="article:modified_time" content="2026-02-21T08:11:36.858Z">
 <meta property="article:author" content="Yukari">
 <meta property="article:tag" content="LoRA">
+<meta property="article:tag" content="RVOS">
 <meta property="article:tag" content="多模态大模型">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2026/02/09/MLLMs%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/av-uie.png">
@@ -344,7 +345,7 @@
 <p>之前的模型采用随机采样或者均匀采样，容易丢失关键帧，锁定到不相关的时间段。现有的 TFS 算法，虽然引入了文本引导采样，但是在实现上是把锁定到的相关的帧抽出来直接拼在一起，丢弃中间的不相关帧，这种做法会导致动作的连续性被破坏，同样不可取。</p>
 <p>作者因此设计了 TCS 模块，用大模型先“粗看”一遍视频，输出目标出现的时间段，然后交给 TCD 模块进行精细的目标检测和分割。有人可能会问，我们采样的目的不就是让大模型尽可能少费 token 吗？现在在 TCS 里大模型先看一遍视频，这不是反而看得更多了吗？关键在于实现细节，也就是要“粗看”。</p>
 <p>具体地说，我们首先对视频进行均匀采样，得到</p>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">采样帧1 - 非采样帧11 - 非采样帧12 - 非采样帧13 - <span class="hljs-string">...</span> - 采样帧2 - 非采样帧21 - 非采样帧22 <span class="hljs-string">...</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">采样帧1 - 非采样帧11 - 非采样帧12 - 非采样帧13 - ... - 采样帧2 - 非采样帧21 - 非采样帧22 ...<br></code></pre></td></tr></table></figure>
 
 <p>这样的视频序列。我们这次不丢弃非采样帧，而是把每一段非采样帧按照九宫格形式物理拼成一帧，每个非采样帧的分辨率和尺寸降低了，但是没有完全丢失。接下来，我们把这样的视频流</p>
 <figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs erlang">采样帧<span class="hljs-number">1</span> - 拼好帧<span class="hljs-number">1</span> - 采样帧<span class="hljs-number">2</span> - 拼好帧<span class="hljs-number">2</span> - ...<br></code></pre></td></tr></table></figure>
@@ -405,6 +406,8 @@ MathJax = {
         <a href="/tags/%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="print-no-link">#多模态大模型</a>
       
         <a href="/tags/LoRA/" class="print-no-link">#LoRA</a>
+      
+        <a href="/tags/RVOS/" class="print-no-link">#RVOS</a>
       
     </div>
   
