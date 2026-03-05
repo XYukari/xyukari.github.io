@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://example.com/2026/03/05/ViT-Swin-Transformer-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image.png">
 <meta property="og:image" content="http://example.com/2026/03/05/ViT-Swin-Transformer-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/moved.png">
 <meta property="article:published_time" content="2026-03-05T07:31:47.000Z">
-<meta property="article:modified_time" content="2026-03-05T11:59:11.754Z">
+<meta property="article:modified_time" content="2026-03-05T12:04:55.118Z">
 <meta property="article:author" content="Yukari">
 <meta property="article:tag" content="Swin Transformer">
 <meta property="article:tag" content="Transformer">
@@ -327,7 +327,16 @@
 
 <p>还是有问题。经过移动之后，本来在左侧的区域到了右侧，模型可能会误以为它们是挨着的。我们只能在用某一块小窗口中的位置查询时，Mask 掉同一窗口中属于其它区域的位置，不查询它们。到此，我们就完善了窗口偏移机制，能够在更优的时间复杂度内，既看到局部，又看到周边。当然，这仍旧不是真正的全局视野，Swin 的全局视野更多的是通过前文提到的不断的下采样来实现的。最后，不要忘了将移动的行和列原封不动的移回来。</p>
 <p>最后，Swin 对位置编码也提出了改进。相比于绝对位置，Swin 关注查询位置和被查询位置的相对位置坐标，因为两者一定同属一个窗口，假设窗口尺寸为 $M$，则总共的二维坐标取值个数不过 $(2M-1)^2$ 个。通过数学变换，Swin 将二维坐标转化为一维，并且设计了一个可学习的偏置表 $B$。每一种不同的相对位置关系 $i$ 在表中都有一个 $B_i$ 偏置贡献到注意力公式，即 $\text{Attention}(Q, K, V)&#x3D;softmax(\dfrac{QK^T}{\sqrt{d_k}}+B_i)V$，以此实现位置编码。</p>
-
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\(', '\)']]
+  }
+};
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
                 
               </div>
             
