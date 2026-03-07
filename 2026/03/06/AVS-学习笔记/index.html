@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/data_pipeline.png">
 <meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/template.png">
 <meta property="article:published_time" content="2026-03-06T06:33:15.000Z">
-<meta property="article:modified_time" content="2026-03-07T11:26:45.333Z">
+<meta property="article:modified_time" content="2026-03-07T11:52:04.749Z">
 <meta property="article:author" content="Yukari">
 <meta property="article:tag" content="AVIS">
 <meta property="article:tag" content="AVS">
@@ -332,7 +332,7 @@
 
 <h3 id="Annotation"><a href="#Annotation" class="headerlink" title="Annotation"></a>Annotation</h3><p>对于 AVSBench-Object 的标注，文中提到：<code>We divide each 5-second video into five equal 1second clips, and we provide manual pixel-level annotations for the 1-second clips.</code> 我理解为对于 5 秒的视频，按照 1 FPS 的采样率进行采样（每一秒的最后一帧），最后只标记了 5 帧。每一帧中发声的物体都会被打上二值掩码。只在声源发声的帧里做 mask，声源不发声的时候不 mask。</p>
 <p>对于单声源的部分，只给第一个采样帧做标注，因为自始至终物体都是同一个。但是文中没说如果声源在第一秒没有发声，之后才开始发声的话，要如何处理。也许不是 <code>the first sampled frame</code>，而是第一个发声的采样帧？多声源则每一帧都进行标注，因为发声物体可能在变化。前者属于半监督，后者属于全监督。</p>
-<p>AVSBench-Semantic 用了一部分 AVSBench-Object 的数据，所以只需要增加类别标签即可，新采集的 10 秒视频按照 AVSBench-Object 的方法同样处理。最后得到的 Ground Truth 形如 ${Y_t}^T_{t&#x3D;1}, Y_t\in\mathbbm{R}^{H\times W\times K}$，其中 $K$ 为预定义类别数。</p>
+<p>AVSBench-Semantic 用了一部分 AVSBench-Object 的数据，所以只需要增加类别标签即可，新采集的 10 秒视频按照 AVSBench-Object 的方法同样处理。最后得到的 Ground Truth 形如 ${Y_t}^T_{t&#x3D;1}, Y_t\in\mathbb{R}^{H\times W\times K}$，其中 $K$ 为预定义类别数。</p>
 <img src="/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/vis_c.png" srcset="/img/loading.gif" lazyload class="">
 
 <p>可视化中用红色字体标出了发声物体，其它工作还有用 🔇🔊 之类的 emoji 标识的；图中用不同颜色区分不同语义类别，比较清楚。这个做法在 AVIS 里沿用了，用于区分不同实例。</p>
