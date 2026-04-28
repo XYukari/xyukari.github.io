@@ -34,8 +34,9 @@
 <meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ravs_dataset2.png">
 <meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/data_pipeline.png">
 <meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/template.png">
+<meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/pr_curve.png">
 <meta property="article:published_time" content="2026-03-06T06:33:15.000Z">
-<meta property="article:modified_time" content="2026-03-07T11:53:29.668Z">
+<meta property="article:modified_time" content="2026-03-09T13:59:47.232Z">
 <meta property="article:author" content="Yukari">
 <meta property="article:tag" content="AVIS">
 <meta property="article:tag" content="AVS">
@@ -248,7 +249,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.7k 字
+          4.2k 字
         
       </span>
     
@@ -259,7 +260,7 @@
         
         
         
-          23 分钟
+          35 分钟
         
       </span>
     
@@ -375,6 +376,35 @@
 <p>除此之外，还设置了一部分不用模板的高质量指代文本，以增强模型的灵活性。所有这些文本会经过 LLM 进行增强，并进行人工检查等。</p>
 <p>最后作者将这些 expressions 按照难度分为三等，简单&#x2F;中等&#x2F;困难分别是 20%&#x2F;60%&#x2F;20%。这个难度似乎是基于实验结果进行评级，难度越高 mIoU 越低，也有可能是反过来？同时作者注意到听觉类别的样本比空间类别的更难，时序类别不能单独存在（效果不好），但是增加时序线索能提高分割效果，暗示时序特化的模型（比如增加 cache）可能有发展前景</p>
 <p>如果要做难度评级的话，应该怎么测定呢？不同的方法可能算出来 mIoU 也并不相同，感觉多个模型的结果取平均也不是很对（如果模型侧重点不同，这种平均看不到数学意义）。</p>
+<h2 id="AVIS"><a href="#AVIS" class="headerlink" title="AVIS"></a>AVIS</h2><p>AVS 的 AVSS 部分虽然能够区分不同的类别，但是无法区分同一个类别的不同物体，比如宴会上我们需要能够区分同时讲话的很多人；同时，AVSBench 基本都是 5-10 秒的短视频，而缺乏长视频。为解决这两个问题，作者提出了 AVIS 任务，要求模型能够基于音视频信息，分割出每个实例，并且标明它们属于什么类别；作者还构建了适用于 AVIS 任务，有 Instance-level 标注的数据集 AVISeg，包含 926 个视频，平均长度 61.4 秒，含有 94074 个掩码，可以分为 4 个场景（音乐、讲话、机械、动物）的 26 个种类。</p>
+<h3 id="任务定义-2"><a href="#任务定义-2" class="headerlink" title="任务定义"></a>任务定义</h3><p>具体地，AVIS 要求模型能够定位并分割出每个发声物体，赋予它一个唯一的标签，并持续追踪它从头到尾；为每一个物体生成一个类别标签 $c^i\in\mathcal{C}$，其中 $\mathcal{C}$ 为预定义的列表标签集合，一个置信度 $s^i$ 以及 <strong>所有</strong> 发声帧上的二值掩码 ${m^i_t}$——这组掩码构成了一条 <strong>预测轨迹</strong>。AVIS 的目的是最小化输出 $(c^i, s^i, {m^i_t})$ 与 Ground Truth 的距离。</p>
+<p>这个距离如何评估呢？作者提出了两个评价指标 mAP 和 HOTA。平均精度均值 mAP，这是一个老牌的视频分割 metrics，侧重于找的全不全、准不准。而 HOTA 叫做高阶追踪精度，不仅要求把目标分割出来，还要求一直连续追踪。</p>
+<p>现在我们手上有很多条预测轨迹，每一条轨迹都属于一个目标，有一个置信度 $s_i$。我们想算出 mAP，首先需要计算这条轨迹的整体 IoU，也就是所有帧拼到一起做交并比。如果这个交并比满足一定的阈值，我们就认为这个预测轨迹是 TP，True Positive，这条预测轨迹正确标记了发声物体；如果交并比过小，则认为是 FP，掩码标记位置错误；如果 Ground Truth 里有一条轨迹没法和任何预测轨迹匹配，那我们认为它被“漏掉了”，属于 FN。</p>
+<p>有了这三个量（实际上应该还有 TN，但是这个情景下没法计算也没有意义），我们可以计算出准确率和召回率：</p>
+<ul>
+<li>准确率：$\frac{TP}{TP+FP}$，即所有分割出的轨迹中，分割对的比例；</li>
+<li>召回率：$\frac{TP}{TP+FN}$，即所有真实轨迹中，被正确分割的比例。</li>
+</ul>
+<p>但是我们不是一次性计算所有预测轨迹的准确率和召回率，而是类似前缀和的想法，先将所有的预测轨迹按照置信度降序排序，然后逐个拿出置信度最高的预测轨迹，计算出第 1 条轨迹的 $(准确率, 召回率)$，第 1-2 条预测轨迹的 $(准确率, 召回率)$……以此类推。这样我们能够得到 $N$ 个点，将其在 $准确率\times 召回率$ 的平面上绘制出来，并且连成一条线，这条线就是 PR 曲线，一般如下图所示：</p>
+<img src="/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/pr_curve.png" srcset="/img/loading.gif" lazyload class="">
+
+<p>比方说置信度最高的预测轨迹属于 TP，当前分割出的轨迹只有这 1 条，则准确率为 1；而召回率因为不看当前分割多少条，只看所有真实轨迹，所以分母很大，趋近于 0；位置就落在左上角。这个面积相当于对召回率做准确率的平均，即为 AP，平均精度。一般来说，越好的模型 AP 越大。</p>
+<p>我们现在不把所有的轨迹放在一起做 AP，而是按照类别分开，得到多条 PR 曲线，算出 $AP_{animal}, AP_{speaking}, AP_{music}\cdots$ 然后取平均，得到 mAP。这就是 mAP 的计算过程。</p>
+<p>但是显然 mAP 有一些问题，它可以对各种物体甚至是不发声的物体都输出一条低置信度的轨迹。这些轨迹不会影响高置信度点在左侧建立起来的高准确率区域，但是能够在拉满召回率的同时蒙对一些物体，增加面积；即便给到了错误的区域，惩罚也不够强。因此我们还需要 HOTA。</p>
+<p>HOTA 的核心公式为 $\sqrt{DetA\cdot AssA}，其中 $DetA$ 表示检测精度，与 IoU 类似，描述有没有精确分割；$AssA$ 为关联精度，描述有没有从头到尾连续跟踪。而与 mAP 显著不同的是，HOTA 强制要求预测轨迹和真实轨迹一一对应（双射），如果有没有对应上的轨迹，则会给 $DetA, AssA$ 拉低分数。</p>
+<p>第三个评价标准是作者自行提出的 FSLA，意在计算正确分割的帧占全部帧的比例。首先用匈牙利算法对预测掩码和 Ground Truth 的掩码进行二分图匹配，然后对于每一帧，按以下标准判断是否属于正确分割的帧：</p>
+<ul>
+<li>发声物体数量是否正确；</li>
+<li>发声物体类别是否正确；</li>
+<li>各物体 IoU 是否大于阈值 $\alpha$。</li>
+</ul>
+<p>对于第三点，具体的执行方法是，从 $[0.05, 0.95]$ 区间内步长为 $0.05$ 的枚举 $\alpha$，做了 19 次不同标准的独立阅卷。比较简单的轮次里，大部分的帧都能正确分割，而比较难的轮次中正确分割的帧数就很少。我们对每个轮次计算出的正确分割比例做算数平均，即为 FSLA 的结果。</p>
+<h3 id="Dataset-2"><a href="#Dataset-2" class="headerlink" title="Dataset"></a>Dataset</h3><p>在构建 AVISeg 数据集的时候，作者同样提出了三条原则：</p>
+<ul>
+<li>选取 60 秒左右的长视频，模拟真实情况；</li>
+<li>包含多种声音，26 个种类；</li>
+<li>包含复杂实例，同时具有静音&#x2F;单声源&#x2F;多声源等情况。</li>
+</ul>
 <script>
 MathJax = {
   tex: {
@@ -480,6 +510,12 @@ MathJax = {
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2026/04/28/%E4%B8%AD%E4%BD%8D%E6%95%B0%E8%B4%AA%E5%BF%83%E8%AF%81%E6%98%8E/" title="中位数贪心证明">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">中位数贪心证明</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
