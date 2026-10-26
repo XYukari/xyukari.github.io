@@ -8,8 +8,8 @@
 <head>
   <meta charset="UTF-8">
 
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
-  <link rel="icon" href="/img/avatar.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/site/avatar.jpg">
+  <link rel="icon" href="/images/site/avatar.jpg">
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
@@ -22,28 +22,28 @@
     <meta name="description" content="AVS任务定义AVS 是指为视频帧期间所有发出声音的画面内物体生成 像素级 mask 的分割任务。文章中分为三个场景：  单声源 (S4)：视频里从始至终只有一个声源在发声； 多声源 (MS3)：视频中有多个声源，可能同时发声，也可能先后发声，需要全分割出来，但是不需要区分类别； 语义分割 (AVSS)：多声源，每个像素除了要输出二值掩码，还要输出预定义的分类标签，标识属于哪一类。  Datase">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AVS 学习笔记">
-<meta property="og:url" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:url" content="https://xyukari.github.io/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Yukari&#39;s Blog">
 <meta property="og:description" content="AVS任务定义AVS 是指为视频帧期间所有发出声音的画面内物体生成 像素级 mask 的分割任务。文章中分为三个场景：  单声源 (S4)：视频里从始至终只有一个声源在发声； 多声源 (MS3)：视频中有多个声源，可能同时发声，也可能先后发声，需要全分割出来，但是不需要区分类别； 语义分割 (AVSS)：多声源，每个像素除了要输出二值掩码，还要输出预定义的分类标签，标识属于哪一类。  Datase">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/avs_dataset_cmp.png">
-<meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/avs_sem.png">
-<meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/vis_c.png">
-<meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/clarify.png">
-<meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ravs_dataset.png">
-<meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ravs_dataset2.png">
-<meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/data_pipeline.png">
-<meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/template.png">
-<meta property="og:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/pr_curve.png">
+<meta property="og:image" content="https://xyukari.github.io/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/avs_dataset_cmp.png">
+<meta property="og:image" content="https://xyukari.github.io/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/avs_sem.png">
+<meta property="og:image" content="https://xyukari.github.io/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/vis_c.png">
+<meta property="og:image" content="https://xyukari.github.io/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/clarify.png">
+<meta property="og:image" content="https://xyukari.github.io/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ravs_dataset.png">
+<meta property="og:image" content="https://xyukari.github.io/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ravs_dataset2.png">
+<meta property="og:image" content="https://xyukari.github.io/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/data_pipeline.png">
+<meta property="og:image" content="https://xyukari.github.io/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/template.png">
+<meta property="og:image" content="https://xyukari.github.io/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/pr_curve.png">
 <meta property="article:published_time" content="2026-03-06T06:33:15.000Z">
-<meta property="article:modified_time" content="2026-03-09T13:59:47.232Z">
+<meta property="article:modified_time" content="2026-10-26T07:07:01.170Z">
 <meta property="article:author" content="Yukari">
 <meta property="article:tag" content="AVIS">
 <meta property="article:tag" content="AVS">
 <meta property="article:tag" content="Ref-AVS">
 <meta property="article:tag" content="VPO">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/avs_dataset_cmp.png">
+<meta name="twitter:image" content="https://xyukari.github.io/2026/03/06/AVS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/avs_dataset_cmp.png">
   
   
   
@@ -85,7 +85,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"htCgd1nqpl7eY5SU3aqYf3db-gzGzoHsz","app_key":"BtCQV3zRTwUc3XGzul8ucGDY","server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"xyukari.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"htCgd1nqpl7eY5SU3aqYf3db-gzGzoHsz","app_key":"BtCQV3zRTwUc3XGzul8ucGDY","server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -144,7 +144,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
+                <span>Home</span>
               </a>
             </li>
           
@@ -156,7 +156,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
+                <span>Archives</span>
               </a>
             </li>
           
@@ -168,7 +168,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
+                <span>Categories</span>
               </a>
             </li>
           
@@ -180,7 +180,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
+                <span>Tags</span>
               </a>
             </li>
           
@@ -192,7 +192,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
+                <span>About</span>
               </a>
             </li>
           
@@ -238,7 +238,7 @@
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
         <time datetime="2026-03-06 14:33" pubdate>
-          2026年3月6日 下午
+          2026-03-06 14:33
         </time>
       </span>
     
@@ -249,7 +249,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.2k 字
+          4.2k words
         
       </span>
     
@@ -260,7 +260,7 @@
         
         
         
-          35 分钟
+          35 mins
         
       </span>
     
@@ -270,7 +270,7 @@
       
         <span id="leancloud-page-views-container" class="post-meta" style="display: none">
           <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="leancloud-page-views"></span> 次
+          <span id="leancloud-page-views"></span> views
         </span>
         
       
@@ -405,16 +405,6 @@
 <li>包含多种声音，26 个种类；</li>
 <li>包含复杂实例，同时具有静音&#x2F;单声源&#x2F;多声源等情况。</li>
 </ul>
-<script>
-MathJax = {
-  tex: {
-    inlineMath: [['$', '$']]
-  }
-};
-</script>
-<script id="MathJax-script" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-</script>
 
                 
               </div>
@@ -433,7 +423,7 @@ MathJax = {
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%A7%91%E7%A0%94/" class="category-chain-item">科研</a>
+  <a href="/categories/research/" class="category-chain-item">Research</a>
   
   
 
@@ -467,31 +457,31 @@ MathJax = {
   <div class="license-box my-3">
     <div class="license-title">
       <div>AVS 学习笔记</div>
-      <div>http://example.com/2026/03/06/AVS-学习笔记/</div>
+      <div>https://xyukari.github.io/2026/03/06/AVS-学习笔记/</div>
     </div>
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>作者</div>
+          <div>Author</div>
           <div>Yukari</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2026年3月6日</div>
+          <div>Posted on</div>
+          <div>2026-03-06</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>许可协议</div>
+          <div>Licensed under</div>
           <div>
             
               
               
                 <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
                     <i class="iconfont icon-cc-by"></i>
                   </span>
                 </a>
@@ -514,7 +504,7 @@ MathJax = {
                       <a href="/2026/04/28/%E4%B8%AD%E4%BD%8D%E6%95%B0%E8%B4%AA%E5%BF%83%E8%AF%81%E6%98%8E/" title="中位数贪心证明">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">中位数贪心证明</span>
-                        <span class="visible-mobile">上一篇</span>
+                        <span class="visible-mobile">Previous</span>
                       </a>
                     
                   </article>
@@ -523,7 +513,7 @@ MathJax = {
                     
                       <a href="/2026/03/05/ViT-Swin-Transformer-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="ViT &amp; Swin Transformer 学习笔记">
                         <span class="hidden-mobile">ViT &amp; Swin Transformer 学习笔记</span>
-                        <span class="visible-mobile">下一篇</span>
+                        <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -544,7 +534,7 @@ MathJax = {
     <div id="toc">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
-    <span>目录</span>
+    <span>Table of Contents</span>
   </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
@@ -581,6 +571,12 @@ MathJax = {
   
 
 
+  
+  
+
+
+
+
 
 
 
@@ -600,7 +596,7 @@ MathJax = {
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -608,7 +604,7 @@ MathJax = {
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -636,16 +632,16 @@ MathJax = {
   
     
       <span id="leancloud-site-pv-container" style="display: none">
-        总访问量 
+        Total views: 
         <span id="leancloud-site-pv"></span>
-         次
+        
       </span>
     
     
       <span id="leancloud-site-uv-container" style="display: none">
-        总访客数 
+        Total visitors: 
         <span id="leancloud-site-uv"></span>
-         人
+        
       </span>
     
     
@@ -798,6 +794,49 @@ MathJax = {
 
   <script>Fluid.plugins.imageCaption();</script>
 
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
   <script defer src="/js/leancloud.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
@@ -814,7 +853,7 @@ MathJax = {
   
 
   <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
   </noscript>
 </body>
 </html>
